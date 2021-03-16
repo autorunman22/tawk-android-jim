@@ -1,12 +1,12 @@
-package com.tawkto.jim.retrofit
+package com.tawkto.jim.db
 
 import com.tawkto.jim.model.User
 import com.tawkto.jim.util.Mapper
 import javax.inject.Inject
 
-class NetworkMapper @Inject constructor() : Mapper<UserNetworkEntity, User> {
+class CacheMapper @Inject constructor(): Mapper<UserCacheEntity, User> {
 
-    override fun mapFromEntity(entity: UserNetworkEntity): User {
+    override fun mapFromEntity(entity: UserCacheEntity): User {
         return User(
             id = entity.id,
             username = entity.username,
@@ -15,8 +15,8 @@ class NetworkMapper @Inject constructor() : Mapper<UserNetworkEntity, User> {
         )
     }
 
-    override fun mapToEntity(model: User): UserNetworkEntity {
-        return UserNetworkEntity(
+    override fun mapToEntity(model: User): UserCacheEntity {
+        return UserCacheEntity(
             id = model.id,
             username = model.username,
             avatarUrl = model.avatarUrl,
@@ -24,7 +24,7 @@ class NetworkMapper @Inject constructor() : Mapper<UserNetworkEntity, User> {
         )
     }
 
-    fun mapFromEntityList(entities: List<UserNetworkEntity>): List<User> {
+    fun mapFromEntityList(entities: List<UserCacheEntity>): List<User> {
         return entities.map { mapFromEntity(it) }
     }
 }

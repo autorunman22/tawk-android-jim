@@ -8,5 +8,7 @@ class UserNetworkEntity(
     @SerializedName("login")
     var username: String,
     @SerializedName("avatar_url")
-    var avatarUrl: String
+    var avatarUrl: String,
+    @SerializedName("type")
+    var type: String
 )

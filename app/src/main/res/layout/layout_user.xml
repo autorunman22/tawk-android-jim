@@ -5,14 +5,19 @@
         <variable
             name="user"
             type="com.tawkto.jim.model.User" />
+        <variable
+            name="vm"
+            type="com.tawkto.jim.ui.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:padding="16dp"
+        android:onClick="@{() -> vm.onClickProfile(user.id)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/iv_avatar"
+            android:src="@drawable/tawk"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,9 +31,17 @@
             android:text="@{user.username, default=`Username`}"
             android:textSize="24sp"
             android:textColor="@color/black"
+            app:layout_constraintVertical_bias="0"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@id/iv_avatar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+            android:id="@+id/tv_type"
+            android:text="@{user.type, default=`Type`}"
+            app:layout_constraintTop_toBottomOf="@id/tv_user"
+            app:layout_constraintStart_toStartOf="@id/tv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

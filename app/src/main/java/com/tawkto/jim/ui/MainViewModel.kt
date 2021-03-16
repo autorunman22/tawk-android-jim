@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,5 +27,9 @@ class MainViewModel @Inject constructor(private val userRepository: UserReposito
                 mUsers.value = it
             }
         }
+    }
+
+    fun onClickProfile(id: Int) {
+        Timber.d("Loading profile")
     }
 }

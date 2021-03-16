@@ -1,6 +1,7 @@
 package com.tawkto.jim.repository
 
-import android.util.Log
+import com.tawkto.jim.db.CacheMapper
+import com.tawkto.jim.db.UserDao
 import com.tawkto.jim.model.User
 import com.tawkto.jim.retrofit.GithubService
 import com.tawkto.jim.retrofit.NetworkMapper
@@ -13,16 +14,23 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(private val githubService: GithubService,
-                                         private val networkMapper: NetworkMapper) {
+                                         private val networkMapper: NetworkMapper,
+                                         private val userDao: UserDao,
+                                         private val cacheMapper: CacheMapper) {
 
     suspend fun getUsers(): Flow<DataState<List<User>>> = flow {
-        Timber.d("Loading")
+        Timber.d("Fetching users...")
         emit(DataState.Loading)
-        delay(2000)
+        delay(1000)
         try {
             val networkUsers = githubService.users()
             val users = networkMapper.mapFromEntityList(networkUsers)
-            Timber.d("users: $users")
+
+            // Save to Room
+            for (user in users) {
+                userDao.insert(cacheMapper.mapToEntity(user))
+            }
+
             emit(DataState.Success(users))
         } catch (e: Exception) {
             emit(DataState.Error(e))

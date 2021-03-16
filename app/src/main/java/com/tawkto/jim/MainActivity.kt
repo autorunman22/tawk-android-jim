@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                     layoutUser {
                         id(user.id)
                         user(user)
+                        vm(viewModel)
                         onBind { _, view, _ ->
                             (view.dataBinding as LayoutUserBinding).apply {
                                 Glide.with(context)
