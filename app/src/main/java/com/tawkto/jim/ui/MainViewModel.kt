@@ -1,6 +1,5 @@
 package com.tawkto.jim.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tawkto.jim.model.User
@@ -8,9 +7,7 @@ import com.tawkto.jim.repository.UserRepository
 import com.tawkto.jim.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,7 +26,11 @@ class MainViewModel @Inject constructor(private val userRepository: UserReposito
         }
     }
 
+    private val mNavToProfile = MutableSharedFlow<Int>(replay = 1)
+    val navToProfile: SharedFlow<Int> = mNavToProfile
+
     fun onClickProfile(id: Int) {
-        Timber.d("Loading profile")
+        Timber.d("Loading profile: $id")
+        mNavToProfile.tryEmit(id)
     }
 }

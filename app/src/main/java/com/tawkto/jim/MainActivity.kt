@@ -1,5 +1,6 @@
 package com.tawkto.jim
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -35,6 +36,14 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> Timber.d("success: ${it}")
                 }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.navToProfile.collect {
+                Timber.d("Navigating now to $it")
+                val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+                startActivity(intent)
             }
         }
     }
