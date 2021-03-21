@@ -1,5 +1,5 @@
 # tawk-android-jim 
-## (15/25 points completed) 
+## (16/25 points completed) 
 Simple Github User and Profile demonstration
 
 ### General Requirements
@@ -21,7 +21,7 @@ Simple Github User and Profile demonstration
 - [x] **Requirement 1**: The app has to be able to work offline if data has been previously loaded.
 - [ ] **Requirement 2**: The app must handle no internet scenario, show appropriate UI indicators.
 - [ ] **Requirement 3**: The app must automatically retry loading data once the connection is available.
-- [ ] **Requirement 4**: When there is data available (saved in the database) from previous launches, that data should be displayed first, then (in parallel) new data should be fetched from the backend.
+- [x] **Requirement 4**: When there is data available (saved in the database) from previous launches, that data should be displayed first, then (in parallel) new data should be fetched from the backend.
 
 ### Users list
 - [x] **Requirement 1**: Github users list can be obtained from https://api.github.com/users?since=0 in JSON format.
