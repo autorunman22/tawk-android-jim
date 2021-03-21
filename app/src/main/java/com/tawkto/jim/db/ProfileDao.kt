@@ -11,6 +11,9 @@ interface ProfileDao {
     @Query("select * from profiles")
     fun profiles(): List<ProfileCacheEntity>
 
+    @Query("select * from profiles where id = :id")
+    fun getProfileById(id: Int): ProfileCacheEntity?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(profile: ProfileCacheEntity): Long
 }

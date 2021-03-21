@@ -18,27 +18,30 @@ class UserRepository @Inject constructor(
     private val userCacheMapper: UserCacheMapper
 ) {
 
+    /**
+     * Emits a flow by fetching users from /users endpoint
+     * */
     suspend fun getUsers(): Flow<DataState<List<User>>> = flow {
         Timber.d("Fetching users list...")
         emit(DataState.Loading)
 
         Timber.d("Show cached users if any")
-        val dbUsers = userCacheMapper.mapFromEntityList(userDao.users())
-        emit(DataState.Success(dbUsers))
+        val mUsers = userCacheMapper.mapFromEntityList(userDao.users())
+        emit(DataState.Success(mUsers))
 
-        try {
-            val networkUsers = githubService.users()
-            val users = networkMapper.mapFromEntityList(networkUsers)
-
-            // Cache users to Room
-            for (user in users) {
-                userDao.insert(userCacheMapper.mapToEntity(user))
-            }
-
-            emit(DataState.Success(users))
-            Timber.d("Done")
-        } catch (e: Exception) {
-            emit(DataState.Error(e))
-        }
+//        try {
+//            val networkUsers = githubService.users()
+//            val users = networkMapper.mapFromEntityList(networkUsers)
+//
+//            // Cache users to Room
+//            for (user in users) {
+//                userDao.insert(userCacheMapper.mapToEntity(user))
+//            }
+//
+//            emit(DataState.Success(users))
+//            Timber.d("Done")
+//        } catch (e: Exception) {
+//            emit(DataState.Error(e))
+//        }
     }
 }

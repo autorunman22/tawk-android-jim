@@ -26,6 +26,9 @@ class ProfileActivity : AppCompatActivity() {
         Timber.d("Profile user: $user")
 
         binding = ActivityProfileBinding.inflate(layoutInflater).apply {
+            vm = viewModel
+            lifecycleOwner = this@ProfileActivity
+
             Glide.with(this@ProfileActivity)
                 .load(user.avatarUrl)
                 .into(ivAvatar)
@@ -33,7 +36,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
 
-        fetchUserByName(user.username)
+        fetchUserByName(user.username, user.id)
 
         setupCollection()
     }
@@ -65,8 +68,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchUserByName(name: String) {
-        viewModel.userByName(name)
+    private fun fetchUserByName(name: String, id: Int) {
+        viewModel.userByName(name, id)
     }
 
     private fun getUser() = intent.getSerializableExtra("user") as User

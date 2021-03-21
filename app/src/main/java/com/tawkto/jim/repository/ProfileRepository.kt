@@ -19,30 +19,41 @@ class ProfileRepository @Inject constructor(
     private val profileCacheMapper: ProfileCacheMapper,
 ) {
 
-    suspend fun userByName(name: String): Flow<DataState<Profile>> = flow {
+    /**
+     * Emits a flow by fetching specific profile from /users/{name}
+     *
+     * @param name Name slug input for the endpoint
+     * @param id Profile ID used for offline mode (if profile is cached already)
+     * */
+    suspend fun userByName(name: String, id: Int): Flow<DataState<Profile>> = flow {
         Timber.d("Fetching profile...")
         emit(DataState.Loading)
 
-        try {
-            val profileNetEntity = githubService.user(name)
-            val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity)
-
-            // Cache profile to room
-            profileDao.insert(profileCacheMapper.mapToEntity(profile))
-//            val profileEntity = ProfileNetworkEntity(
-//                3,
-//                "https://avatars.githubusercontent.com/u/3?v=4",
-//                "PJ Simon",
-//                "Facebook Inc",
-//                "http://tawk.to/blog",
-//                "LA San Francisco",
-//                "pjhyatt@tawk.com",
-//                3450,
-//                120)
-
+        val profile = profileDao.getProfileById(id)?.let { profileCacheMapper.mapFromEntity(it) }
+        profile?.let {
             emit(DataState.Success(profile))
-        } catch (e: Exception) {
-            emit(DataState.Error(e))
         }
+
+//        try {
+//            val profileNetEntity = githubService.user(name)
+//            val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity)
+//
+//            // Cache profile to room
+//            profileDao.insert(profileCacheMapper.mapToEntity(profile))
+////            val profileEntity = ProfileNetworkEntity(
+////                3,
+////                "https://avatars.githubusercontent.com/u/3?v=4",
+////                "PJ Simon",
+////                "Facebook Inc",
+////                "http://tawk.to/blog",
+////                "LA San Francisco",
+////                "pjhyatt@tawk.com",
+////                3450,
+////                120)
+//
+//            emit(DataState.Success(profile))
+//        } catch (e: Exception) {
+//            emit(DataState.Error(e))
+//        }
     }
 }
