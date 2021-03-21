@@ -1,5 +1,5 @@
 # tawk-android-jim 
-## (16/25 points completed) 
+## (17/25 points completed) 
 Simple Github User and Profile demonstration
 
 ### General Requirements
@@ -28,7 +28,7 @@ Simple Github User and Profile demonstration
 - [ ] **Requirement 2**: The list must support pagination (scroll to load more) utilizing since parameter as the integer ID of the last User loaded.
 - [ ] **Requirement 3**: Page size has to be dynamically determined after the first batch is loaded.
 - [ ] **Requirement 4**: The list has to display a spinner while loading data as the last list item.
-- [ ] **Requirement 5**: Every fourth avatar's (the image - not the background!) colour should have its colours inverted.
+- [x] **Requirement 5**: Every fourth avatar's (the image - not the background!) colour should have its colours inverted.
 - [x] **Requirement 6**: List item view should have a note icon if there is note information saved for the given user.
 - [ ] **Requirement 7**: Users list has to be searchable - local search only; in search mode, there is no pagination; username and note (see Profile section) fields should
 be used when searching, precise match as well as contains should be used.
