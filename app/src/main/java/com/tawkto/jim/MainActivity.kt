@@ -34,15 +34,24 @@ class MainActivity : AppCompatActivity() {
                     is DataState.Success -> {
                         initUsersList(it.data)
                     }
-                    else -> Timber.d("success: ${it}")
+                    is DataState.Error -> {
+                        Timber.d("Error occurred. Please try again.")
+                    }
+                    is DataState.Loading -> {
+                        Timber.d("Loading..")
+                    }
+                    is DataState.Initial -> {
+                        Timber.d("Do nothing")
+                    }
                 }
             }
         }
 
         lifecycleScope.launchWhenStarted {
             viewModel.navToProfile.collect {
-                Timber.d("Navigating now to $it")
-                val intent = Intent(this@MainActivity, ProfileActivity::class.java)
+                val intent = Intent(this@MainActivity, ProfileActivity::class.java).apply {
+                    putExtra("user", it)
+                }
                 startActivity(intent)
             }
         }

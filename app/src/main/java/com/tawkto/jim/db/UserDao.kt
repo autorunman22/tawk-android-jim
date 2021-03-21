@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Query("select * from users")
-    fun users(): Flow<List<UserCacheEntity>>
+    fun users(): List<UserCacheEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userCacheEntity: UserCacheEntity): Long
