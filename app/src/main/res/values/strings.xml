@@ -2,4 +2,12 @@
     <string name="app_name">TawkTo</string>
     <string name="icon">icon</string>
     <string name="sample_name">Tawk</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="_123">123</string>
+    <string name="company">Tawk Inc.</string>
+    <string name="blog">http://blog.tawk.to</string>
+    <string name="write_a_note">Write a note…</string>
+    <string name="save">Save</string>
+    <string name="email_address">tawk@gmail.com</string>
 </resources>

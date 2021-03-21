@@ -3,12 +3,17 @@ package com.tawkto.jim
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.tawkto.jim.databinding.ActivityProfileBinding
 import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.ProfileViewModel
+import com.tawkto.jim.util.DataState
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
+@AndroidEntryPoint
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileBinding
@@ -21,7 +26,6 @@ class ProfileActivity : AppCompatActivity() {
         Timber.d("Profile user: $user")
 
         binding = ActivityProfileBinding.inflate(layoutInflater).apply {
-            this.user = user
             Glide.with(this@ProfileActivity)
                 .load(user.avatarUrl)
                 .into(ivAvatar)
@@ -29,7 +33,40 @@ class ProfileActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
 
+        fetchUserByName(user.username)
 
+        setupCollection()
+    }
+
+    private fun setupCollection() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.user.collect {
+                when(it) {
+                    is DataState.Success -> {
+                        val profile = it.data
+                        binding.apply {
+                            with(profile) {
+                                tvName.text = name ?: "No name"
+                                tvCompany.text = company ?: ""
+                                tvEmail.text = email ?: ""
+                                tvBlog.text = blog ?: ""
+                                tvFollowers.text = followers.toString()
+                                tvFollowing.text = following.toString()
+                            }
+                        }
+                    }
+                    is DataState.Error -> {
+                        Timber.d("Something went wrong: ${it.exception.message}")
+                    }
+                    else -> Timber.d("Handle other states")
+                }
+
+            }
+        }
+    }
+
+    private fun fetchUserByName(name: String) {
+        viewModel.userByName(name)
     }
 
     private fun getUser() = intent.getSerializableExtra("user") as User

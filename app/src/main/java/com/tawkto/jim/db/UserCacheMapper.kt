@@ -4,7 +4,7 @@ import com.tawkto.jim.model.User
 import com.tawkto.jim.util.Mapper
 import javax.inject.Inject
 
-class CacheMapper @Inject constructor(): Mapper<UserCacheEntity, User> {
+class UserCacheMapper @Inject constructor(): Mapper<UserCacheEntity, User> {
 
     override fun mapFromEntity(entity: UserCacheEntity): User {
         return User(

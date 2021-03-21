@@ -3,6 +3,7 @@ package com.tawkto.jim.di
 import android.content.Context
 import androidx.room.Room
 import com.tawkto.jim.db.AppDatabase
+import com.tawkto.jim.db.ProfileDao
 import com.tawkto.jim.db.UserDao
 import dagger.Module
 import dagger.Provides
@@ -27,5 +28,11 @@ object DbModule {
     @Provides
     fun providesUserDao(database: AppDatabase): UserDao {
         return database.getUserDao()
+    }
+
+    @Singleton
+    @Provides
+    fun providesProfileDao(database: AppDatabase): ProfileDao {
+        return database.getProfileDao()
     }
 }

@@ -87,4 +87,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.6"
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:2.2.6"
+
+    // Chucker
+    debugImplementation "com.github.chuckerteam.chucker:library:3.4.0"
 }
