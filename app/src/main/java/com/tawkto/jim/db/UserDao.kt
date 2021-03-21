@@ -15,4 +15,7 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(userCacheEntity: UserCacheEntity): Long
+
+    @Query("UPDATE users SET has_note = :hasNote WHERE id = :id")
+    fun updateNoteById(id: Int, hasNote: Boolean)
 }

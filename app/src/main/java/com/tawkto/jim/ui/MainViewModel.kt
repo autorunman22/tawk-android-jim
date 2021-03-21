@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(private val userRepository: UserReposito
     private val mUsers = MutableStateFlow<DataState<List<User>>>(DataState.Initial)
     val users: StateFlow<DataState<List<User>>> = mUsers
 
-    init {
+    fun loadUsers() {
         viewModelScope.launch(Dispatchers.Default) {
             userRepository.getUsers().collect {
                 mUsers.value = it

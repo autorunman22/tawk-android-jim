@@ -12,6 +12,7 @@ class NetworkMapper @Inject constructor() : Mapper<UserNetworkEntity, User> {
             username = entity.username,
             avatarUrl = entity.avatarUrl,
             type = entity.type,
+            hasNote = false,
         )
     }
 
@@ -24,7 +25,14 @@ class NetworkMapper @Inject constructor() : Mapper<UserNetworkEntity, User> {
         )
     }
 
-    fun mapFromEntityList(entities: List<UserNetworkEntity>): List<User> {
-        return entities.map { mapFromEntity(it) }
+    fun mapFromEntityList(entities: List<UserNetworkEntity>, users: List<User>): List<User> {
+        return entities.map {
+            mapFromEntity(it).apply {
+                val user = users.find { user -> user.id == this.id }
+                if (user != null) {
+                    hasNote = user.hasNote
+                }
+            }
+        }
     }
 }

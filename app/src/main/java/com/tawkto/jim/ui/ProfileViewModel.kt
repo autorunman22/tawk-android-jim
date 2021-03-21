@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tawkto.jim.model.Profile
+import com.tawkto.jim.model.User
 import com.tawkto.jim.repository.ProfileRepository
+import com.tawkto.jim.repository.UserRepository
 import com.tawkto.jim.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,26 +18,38 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val repository: ProfileRepository): ViewModel() {
+class ProfileViewModel @Inject constructor(
+    private val profileRepository: ProfileRepository,
+    private val userRepository: UserRepository
+) : ViewModel() {
 
-    private val mUser = MutableStateFlow<DataState<Profile>>(DataState.Initial)
-    val user: StateFlow<DataState<Profile>> = mUser
+    // To be collected and displayed in the ProfileActivity
+    private val mMutableUser = MutableStateFlow<DataState<Profile>>(DataState.Initial)
+    val user: StateFlow<DataState<Profile>> = mMutableUser
 
+    // Tracks changes to the note field
     val note: MutableLiveData<String?> = MutableLiveData(null)
 
-    // Persist the note for this profile
+    // Keep a reference of the current user to update note field
+    private lateinit var mUser: User
+
+    // Persist the note for this profile and user model
     fun onSave() {
         if (note.value == null) return
 
-        val mNote = note.value!!
-        Timber.d("Saving this note: $mNote")
+        Timber.d("Saving this note: ${note.value}")
+        viewModelScope.launch(Dispatchers.Default) {
+            userRepository.updateNoteById(mUser.id, note.value)
+            profileRepository.updateNoteById(mUser.id, note.value)
+        }
     }
 
-    fun userByName(name: String, id: Int) {
+    fun userByName(user: User) {
+        this.mUser = user
 
         viewModelScope.launch(Dispatchers.Default) {
-            repository.userByName(name, id).collect {
-                mUser.value = it
+            profileRepository.userByName(user.username, user.id).collect {
+                mMutableUser.value = it
             }
         }
     }

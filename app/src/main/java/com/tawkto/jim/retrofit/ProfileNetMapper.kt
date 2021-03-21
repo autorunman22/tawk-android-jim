@@ -16,6 +16,7 @@ class ProfileNetMapper @Inject constructor() : Mapper<ProfileNetworkEntity, Prof
             email = entity.email,
             followers = entity.followers,
             following = entity.following,
+            note = null,
         )
     }
 

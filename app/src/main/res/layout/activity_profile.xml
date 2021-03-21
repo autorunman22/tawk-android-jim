@@ -98,6 +98,7 @@
         <EditText
             android:id="@+id/et_notes"
             android:text="@={vm.note}"
+            android:lines="5"
             android:hint="@string/write_a_note"
             app:layout_constraintBottom_toTopOf="@id/btn_save"
             android:layout_width="match_parent"

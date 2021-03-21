@@ -25,4 +25,6 @@ data class ProfileCacheEntity(
     val followers: Int,
     @ColumnInfo(name = "following")
     val following: Int,
+    @ColumnInfo(name = "note")
+    val note: String?,
 )

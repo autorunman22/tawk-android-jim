@@ -7,4 +7,5 @@ data class User(
     val username: String,
     val avatarUrl: String,
     val type: String,
+    var hasNote: Boolean,
 ) : Serializable

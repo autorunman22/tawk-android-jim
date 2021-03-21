@@ -55,8 +55,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        viewModel.loadUsers()
     }
 
+    // Update the RecyclerView for each collection
     private fun initUsersList(users: List<User>) {
         binding.epoxyUsers.apply {
             withModels {
@@ -80,5 +83,10 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
             setDivider(R.drawable.rv_divider)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadUsers()
     }
 }

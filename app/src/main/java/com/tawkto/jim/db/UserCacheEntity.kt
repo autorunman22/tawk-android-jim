@@ -15,4 +15,6 @@ data class UserCacheEntity(
     val avatarUrl: String,
     @ColumnInfo(name = "type")
     val type: String,
+    @ColumnInfo(name = "has_note")
+    val hasNote: Boolean,
 )

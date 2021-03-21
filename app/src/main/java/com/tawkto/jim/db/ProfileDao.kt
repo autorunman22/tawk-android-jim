@@ -14,6 +14,9 @@ interface ProfileDao {
     @Query("select * from profiles where id = :id")
     fun getProfileById(id: Int): ProfileCacheEntity?
 
+    @Query("UPDATE profiles SET note = :note WHERE id = :id")
+    fun updateNoteById(id: Int, note: String?)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(profile: ProfileCacheEntity): Long
 }

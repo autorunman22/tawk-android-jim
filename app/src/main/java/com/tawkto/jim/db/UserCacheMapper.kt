@@ -12,6 +12,7 @@ class UserCacheMapper @Inject constructor(): Mapper<UserCacheEntity, User> {
             username = entity.username,
             avatarUrl = entity.avatarUrl,
             type = entity.type,
+            hasNote = entity.hasNote,
         )
     }
 
@@ -21,6 +22,7 @@ class UserCacheMapper @Inject constructor(): Mapper<UserCacheEntity, User> {
             username = model.username,
             avatarUrl = model.avatarUrl,
             type = model.type,
+            hasNote = model.hasNote
         )
     }
 

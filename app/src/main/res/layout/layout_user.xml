@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="user"
             type="com.tawkto.jim.model.User" />
@@ -43,5 +44,15 @@
             app:layout_constraintStart_toStartOf="@id/tv_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_note"
+            android:visibility="@{user.hasNote ? View.VISIBLE : View.GONE}"
+            android:src="@drawable/post_it"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -36,7 +36,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
 
-        fetchUserByName(user.username, user.id)
+        fetchUserByName(user)
 
         setupCollection()
     }
@@ -55,6 +55,7 @@ class ProfileActivity : AppCompatActivity() {
                                 tvBlog.text = blog ?: ""
                                 tvFollowers.text = followers.toString()
                                 tvFollowing.text = following.toString()
+                                viewModel.note.value = note
                             }
                         }
                     }
@@ -68,8 +69,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchUserByName(name: String, id: Int) {
-        viewModel.userByName(name, id)
+    private fun fetchUserByName(user: User) {
+        viewModel.userByName(user)
     }
 
     private fun getUser() = intent.getSerializableExtra("user") as User

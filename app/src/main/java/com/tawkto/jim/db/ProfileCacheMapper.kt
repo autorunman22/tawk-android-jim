@@ -17,6 +17,7 @@ class ProfileCacheMapper @Inject constructor(): Mapper<ProfileCacheEntity, Profi
             email = entity.email,
             followers = entity.followers,
             following = entity.following,
+            note = entity.note,
         )
     }
 
@@ -31,6 +32,7 @@ class ProfileCacheMapper @Inject constructor(): Mapper<ProfileCacheEntity, Profi
             email = model.email,
             followers = model.followers,
             following = model.following,
+            note = model.note,
         )
     }
 

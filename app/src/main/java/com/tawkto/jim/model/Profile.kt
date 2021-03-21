@@ -10,4 +10,5 @@ data class Profile(
     val email: String?,
     val followers: Int,
     val following: Int,
+    val note: String?,
 )

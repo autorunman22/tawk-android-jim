@@ -56,4 +56,8 @@ class ProfileRepository @Inject constructor(
 //            emit(DataState.Error(e))
 //        }
     }
+
+    fun updateNoteById(id: Int, note: String?) {
+        profileDao.updateNoteById(id, note)
+    }
 }
