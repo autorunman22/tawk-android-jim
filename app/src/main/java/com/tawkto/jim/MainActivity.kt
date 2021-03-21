@@ -63,19 +63,12 @@ class MainActivity : AppCompatActivity() {
     private fun initUsersList(users: List<User>) {
         binding.epoxyUsers.apply {
             withModels {
-                for (user in users) {
+                users.forEachIndexed { index, user ->
                     layoutUser {
-                        id(user.id)
+                        id(index)
+                        index(index)
                         user(user)
                         vm(viewModel)
-                        onBind { _, view, _ ->
-                            (view.dataBinding as LayoutUserBinding).apply {
-                                Glide.with(context)
-                                    .load(user.avatarUrl)
-                                    .placeholder(R.drawable.tawk)
-                                    .into(ivAvatar)
-                            }
-                        }
                     }
                 }
             }
