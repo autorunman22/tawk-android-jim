@@ -6,17 +6,17 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import timber.log.Timber
 
 fun EpoxyRecyclerView.setDivider(@DrawableRes drawableRes: Int) {
     val divider = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
@@ -82,4 +82,9 @@ fun Context.isNetworkAvailable(): Boolean {
         val nwInfo = connectivityManager.activeNetworkInfo ?: return false
         return nwInfo.isConnected
     }
+}
+
+fun AppCompatActivity.hideSoftKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0);
 }
