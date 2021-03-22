@@ -1,5 +1,5 @@
 # tawk-android-jim 
-## (19/25 points completed)
+## (16/25 points completed) 
 Simple Github User and Profile demonstration
 
 ### General Requirements
