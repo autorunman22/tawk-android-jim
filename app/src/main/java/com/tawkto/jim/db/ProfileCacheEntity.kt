@@ -9,6 +9,8 @@ data class ProfileCacheEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: Int,
+    @ColumnInfo(name = "username")
+    val username: String,
     @ColumnInfo(name = "name")
     val name: String?,
     @ColumnInfo(name = "avatarUrl")

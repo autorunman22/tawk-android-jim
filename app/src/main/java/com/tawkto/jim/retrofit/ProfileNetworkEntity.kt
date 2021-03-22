@@ -7,6 +7,8 @@ data class ProfileNetworkEntity(
     val id: Int,
     @SerializedName("avatar_url")
     val avatarUrl: String,
+    @SerializedName("login")
+    val login: String,
     @SerializedName("name")
     val name: String?,
     @SerializedName("company")

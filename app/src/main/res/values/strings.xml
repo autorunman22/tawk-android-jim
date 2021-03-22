@@ -13,4 +13,5 @@
     <string name="offline_mode">Offline mode</string>
     <string name="online">Online</string>
     <string name="search_user_or_notes">Search user or notes...</string>
+    <string name="search_username_name_or_notes">Search username, name, or notes</string>
 </resources>

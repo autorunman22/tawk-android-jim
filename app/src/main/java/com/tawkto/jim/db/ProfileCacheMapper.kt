@@ -9,6 +9,7 @@ class ProfileCacheMapper @Inject constructor(): Mapper<ProfileCacheEntity, Profi
     override fun mapFromEntity(entity: ProfileCacheEntity): Profile {
         return Profile(
             id = entity.id,
+            username = entity.username,
             name = entity.name,
             avatarUrl = entity.avatarUrl,
             company = entity.company,
@@ -24,6 +25,7 @@ class ProfileCacheMapper @Inject constructor(): Mapper<ProfileCacheEntity, Profi
     override fun mapToEntity(model: Profile): ProfileCacheEntity {
         return ProfileCacheEntity(
             id = model.id,
+            username = model.username,
             name = model.name,
             avatarUrl = model.avatarUrl,
             company = model.company,

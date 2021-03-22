@@ -55,13 +55,15 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             rvUsers.apply {
-                adapter = userAdapter.apply {
-
-                }
+                adapter = userAdapter
                 layoutManager = LinearLayoutManager(context)
                 setDivider(R.drawable.rv_divider)
             }
-
+            etSearch.setOnClickListener {
+                val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, it, "transition_search")
+                val intent = Intent(this@MainActivity, SearchActivity::class.java)
+                startActivity(intent, options.toBundle())
+            }
         }
         setContentView(binding.root)
 

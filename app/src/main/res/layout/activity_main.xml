@@ -14,7 +14,6 @@
             android:background="#D53838"
             android:gravity="center"
             android:padding="6dp"
-            android:focusedByDefault="false"
             android:text="@string/offline_mode"
             android:textColor="@android:color/white"
             android:visibility="gone"
@@ -23,6 +22,7 @@
 
         <EditText
             android:id="@+id/et_search"
+            android:transitionName="transition_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"

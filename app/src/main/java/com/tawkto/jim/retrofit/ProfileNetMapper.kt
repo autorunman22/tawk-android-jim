@@ -8,6 +8,7 @@ class ProfileNetMapper @Inject constructor() : Mapper<ProfileNetworkEntity, Prof
     override fun mapFromEntity(entity: ProfileNetworkEntity): Profile {
         return Profile(
             id = entity.id,
+            username = entity.login,
             name = entity.name,
             avatarUrl = entity.avatarUrl,
             company = entity.company,
@@ -23,6 +24,7 @@ class ProfileNetMapper @Inject constructor() : Mapper<ProfileNetworkEntity, Prof
     override fun mapToEntity(model: Profile): ProfileNetworkEntity {
         return ProfileNetworkEntity(
             id = model.id,
+            login = model.username,
             name = model.name,
             avatarUrl = model.avatarUrl,
             company = model.company,

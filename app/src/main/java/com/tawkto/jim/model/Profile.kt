@@ -2,6 +2,7 @@ package com.tawkto.jim.model
 
 data class Profile(
     val id: Int,
+    val username: String,
     val name: String?,
     val avatarUrl: String,
     val company: String?,

@@ -8,12 +8,12 @@ import com.tawkto.jim.model.User
 object TestUtil {
 
     fun getTestProfileCacheEntity(id: Int = 1): ProfileCacheEntity {
-        return ProfileCacheEntity(id, "Jim", "http://avatar.com/dQdF", null,
+        return ProfileCacheEntity(id, "neutt", "Jim", "http://avatar.com/dQdF", null,
             "http://blog.com/jim", null, null, 150, 120,
             "simple note")
     }
 
-    fun getTestProfile(id: Int = 1): Profile = Profile(id, "Jim",
+    fun getTestProfile(id: Int = 1): Profile = Profile(id, "neutt","Jim",
         "http://avatar.com/dQdF", "tawk", "http://blog.com/jim", null,
         "jim.ovejera@gmail.com", 120, 2, "simple note")
 

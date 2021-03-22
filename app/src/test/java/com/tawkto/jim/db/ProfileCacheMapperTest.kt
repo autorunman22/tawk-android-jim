@@ -41,6 +41,7 @@ class ProfileCacheMapperTest {
 
         assertNotNull(cacheEntity)
         assertEquals(profile.id, cacheEntity.id)
+        assertEquals(profile.username, cacheEntity.username)
         assertEquals(profile.name, cacheEntity.name)
         assertEquals(profile.avatarUrl, cacheEntity.avatarUrl)
         assertEquals(profile.company, cacheEntity.company)
