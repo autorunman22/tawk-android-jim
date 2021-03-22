@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             rvUsers.apply {
-                adapter = userAdapter
+                adapter = userAdapter.apply {
+
+                }
                 layoutManager = LinearLayoutManager(context)
                 setDivider(R.drawable.rv_divider)
             }
@@ -53,28 +55,10 @@ class MainActivity : AppCompatActivity(), NetCallback {
         lifecycleScope.launchWhenStarted {
             viewModel.flowPager.collect {
                 userAdapter.submitData(it.map { userCacheEntity ->
-                    userCacheMapper.mapFromEntity(userCacheEntity)
+                    userCacheMapper.mapFromEntity(userCacheEntity).also { user ->
+                        user.hasNote = viewModel.hasNote(user.id)
+                    }
                 })
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.users.collect {
-                when (it) {
-                    is DataState.Success -> {
-                        Timber.d("Success data: ${it.data.size}")
-//                        initUsersList(it.data)
-                    }
-                    is DataState.Error -> {
-                        Timber.d("Error occurred. Please try again: ${it.exception.message}")
-                    }
-                    is DataState.Loading -> {
-                        Timber.d("Loading..")
-                    }
-                    is DataState.Initial -> {
-                        Timber.d("Do nothing")
-                    }
-                }
             }
         }
 
@@ -87,40 +71,13 @@ class MainActivity : AppCompatActivity(), NetCallback {
             }
         }
 
-        viewModel.loadUsers()
-
         initNetworkCallbacks()
     }
-
-//    // Update the RecyclerView for each collection
-//    private fun initUsersList(users: List<User>) {
-//        binding.epoxyUsers.apply {
-//            withModels {
-//                users.forEachIndexed { index, user ->
-//                    layoutUser {
-//                        id(index)
-//                        index(index)
-//                        user(user)
-//                        vm(viewModel)
-//                    }
-//                }
-//            }
-//            requestModelBuild()
-//            layoutManager = LinearLayoutManager(context)
-//            setDivider(R.drawable.rv_divider)
-//        }
-//    }
 
     private fun initNetworkCallbacks() {
         networkUtil = NetworkUtil(applicationContext, this).apply {
             startNetworkCallback()
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadUsers()
     }
 
     override fun onDestroy() {
@@ -132,7 +89,6 @@ class MainActivity : AppCompatActivity(), NetCallback {
         if (isInit) {
             Timber.d("Do something online")
             toggleNetMode(true)
-            viewModel.loadUsers()
         } else isInit = true // On Activity load, let onCreate fetches the data
     }
 
@@ -142,7 +98,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
     }
 
     private fun toggleNetMode(isOnline: Boolean) {
-        Timber.d("Toggleing: $isOnline")
+        Timber.d("Toggling: $isOnline")
         binding.apply {
             lifecycleScope.launch(Dispatchers.Main) {
                 if (isOnline) {

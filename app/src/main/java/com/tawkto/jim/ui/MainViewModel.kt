@@ -4,17 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.tawkto.jim.db.UserCacheEntity
-import com.tawkto.jim.db.UserCacheMapper
 import com.tawkto.jim.db.UserDao
 import com.tawkto.jim.model.User
-import com.tawkto.jim.paging.UserPagingSource
 import com.tawkto.jim.paging.UserRemoteMediator
+import com.tawkto.jim.repository.ProfileRepository
 import com.tawkto.jim.repository.UserRepository
 import com.tawkto.jim.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,8 +22,7 @@ import javax.inject.Inject
 class MainViewModel @ExperimentalPagingApi
 @Inject constructor(
     private val userRepository: UserRepository,
-    private val pagingSource: UserPagingSource,
-    private val userCacheMapper: UserCacheMapper,
+    private val profileRepository: ProfileRepository,
     remoteMediator: UserRemoteMediator,
     private val userDao: UserDao,
 ) : ViewModel() {
@@ -39,6 +38,11 @@ class MainViewModel @ExperimentalPagingApi
     private val mUsers = MutableStateFlow<DataState<List<User>>>(DataState.Initial)
     val users: StateFlow<DataState<List<User>>> = mUsers
 
+    suspend fun hasNote(id: Int): Boolean = withContext(Dispatchers.Default) {
+        return@withContext profileRepository.profileHasNote(id)
+    }
+
+    // For version without paging
     fun loadUsers() {
         viewModelScope.launch(Dispatchers.Default) {
             userRepository.getUsers().collect {
