@@ -1,14 +1,17 @@
 package com.tawkto.jim
 
+import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.Window
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.tawkto.jim.databinding.ActivityMainBinding
 import com.tawkto.jim.db.UserCacheMapper
 import com.tawkto.jim.paging.adapter.UserAdapter
@@ -36,9 +39,19 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
     @ExperimentalPagingApi
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
+
         super.onCreate(savedInstanceState)
 
-        userAdapter = UserAdapter(viewModel)
+        userAdapter = UserAdapter(viewModel) { user, view ->
+            val options = ActivityOptions.makeSceneTransitionAnimation(this, view, "shared_image_view")
+            val intent = Intent(this@MainActivity, ProfileActivity::class.java).apply {
+                putExtra("userTriple",  Triple(user.id, user.username, user.avatarUrl))
+            }
+            startActivity(intent, options.toBundle())
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             rvUsers.apply {
@@ -59,15 +72,6 @@ class MainActivity : AppCompatActivity(), NetCallback {
                         user.hasNote = viewModel.hasNote(user.id)
                     }
                 })
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.navToProfile.collect {
-                val intent = Intent(this@MainActivity, ProfileActivity::class.java).apply {
-                    putExtra("userPair", it)
-                }
-                startActivity(intent)
             }
         }
 

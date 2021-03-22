@@ -1,6 +1,7 @@
 package com.tawkto.jim.paging.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +10,7 @@ import com.tawkto.jim.databinding.LayoutUserBinding
 import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.MainViewModel
 
-class UserAdapter(private val viewModel: MainViewModel) : PagingDataAdapter<User, UserAdapter.UserViewHolder>(COMPARATOR){
+class UserAdapter(private val viewModel: MainViewModel, private val onItemClick: (User, View) -> Unit) : PagingDataAdapter<User, UserAdapter.UserViewHolder>(COMPARATOR){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = LayoutUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,6 +24,9 @@ class UserAdapter(private val viewModel: MainViewModel) : PagingDataAdapter<User
             setUser(user)
             vm = viewModel
             index = position
+            clContainer.setOnClickListener {
+                onItemClick.invoke(user, ivAvatar)
+            }
         }
     }
 

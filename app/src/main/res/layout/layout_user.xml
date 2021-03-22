@@ -13,15 +13,16 @@
             name="vm"
             type="com.tawkto.jim.ui.MainViewModel" />
     </data>
-
+<!--    android:onClick="@{() -> vm.onClickProfile(user.id, user.username)}"-->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_container"
         android:padding="16dp"
-        android:onClick="@{() -> vm.onClickProfile(user.id, user.username)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/iv_avatar"
             android:src="@drawable/tawk"
+            android:transitionName="shared_image_view"
             srcByUrl="@{user.avatarUrl}"
             imgIndex="@{index}"
             app:layout_constraintTop_toTopOf="parent"

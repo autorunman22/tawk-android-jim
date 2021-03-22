@@ -50,12 +50,4 @@ class MainViewModel @ExperimentalPagingApi
             }
         }
     }
-
-    private val mNavToProfile = MutableSharedFlow<Pair<Int, String>>(replay = 1)
-    val navToProfile: SharedFlow<Pair<Int, String>> = mNavToProfile
-
-    fun onClickProfile(id: Int, username: String) {
-        Timber.d("Selecting user with ID: $id and username: $username")
-        mNavToProfile.tryEmit(id to username)
-    }
 }
