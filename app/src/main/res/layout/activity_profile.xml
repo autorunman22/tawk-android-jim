@@ -123,6 +123,7 @@
             android:id="@+id/btn_save"
             android:onClick="@{() -> vm.onSave()}"
             android:text="@string/save"
+            android:backgroundTint="#04a34b"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
