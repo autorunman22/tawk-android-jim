@@ -97,4 +97,6 @@ dependencies {
     // Mockito
     testImplementation 'org.mockito:mockito-core:3.3.3'
     testImplementation 'org.mockito:mockito-inline:3.3.3'
+
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3'
 }
