@@ -36,7 +36,9 @@ class ProfileRepository @Inject constructor(
 
         try {
             val profileNetEntity = githubService.profile(name)
-            val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity)
+            val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity).apply {
+                note = profileDb?.note
+            }
 
             // Cache profile to room
             profileDao.insert(profileCacheMapper.mapToEntity(profile))
@@ -51,6 +53,7 @@ class ProfileRepository @Inject constructor(
         profileDao.updateNoteById(id, note)
     }
 
+    // Returns true if this profile has non-null note
     fun profileHasNote(id: Int): Boolean {
         val profileCache = profileDao.getProfileById(id) ?: return false
 

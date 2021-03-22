@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.tawkto.jim.databinding.ActivityProfileBinding
-import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.ProfileViewModel
 import com.tawkto.jim.util.DataState
 import com.tawkto.jim.util.isNetworkAvailable
+import com.tawkto.jim.util.snack
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
@@ -40,6 +40,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupCollection() {
+        // Collect profile info
         lifecycleScope.launchWhenStarted {
             viewModel.user.collect {
                 when(it) {
@@ -67,6 +68,13 @@ class ProfileActivity : AppCompatActivity() {
                     else -> Timber.d("Handle other states")
                 }
 
+            }
+        }
+
+        // Collect save event
+        lifecycleScope.launchWhenStarted {
+            viewModel.saveEvent.collect {
+                binding.root.snack("Note saved successfully")
             }
         }
     }
