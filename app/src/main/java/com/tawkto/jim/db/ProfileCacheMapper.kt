@@ -38,4 +38,10 @@ class ProfileCacheMapper @Inject constructor(): Mapper<ProfileCacheEntity, Profi
         )
     }
 
+    fun mapFromEntityList(profiles: List<ProfileCacheEntity>): List<Profile> {
+        return profiles.map {
+            mapFromEntity(it)
+        }
+    }
+
 }

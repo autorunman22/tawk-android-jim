@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="vm"
+            type="com.tawkto.jim.ui.SearchViewModel" />
+        <variable
+            name="profile"
+            type="com.tawkto.jim.model.Profile" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@color/white"
         xmlns:app="http://schemas.android.com/apk/res-auto">
-        <TextView
-            android:id="@+id/tv_foo"
-            android:text="Test search item"
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:src="@drawable/tawk"
+            android:transitionName="shared_image_view"
+            srcByUrl="@{profile.avatarUrl}"
+            imgIndex="@{0}"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/icon" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{profile.name, default=`Username`}"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            app:layout_constraintVertical_bias="0"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+            android:id="@+id/tv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`@` + profile.username, default=`Username`}"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            app:layout_constraintStart_toStartOf="@id/tv_name"/>
+        <TextView
+            android:id="@+id/tv_note"
+            android:text="@{profile.note, default=@string/note}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="start"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

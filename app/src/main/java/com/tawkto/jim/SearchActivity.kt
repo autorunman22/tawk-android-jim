@@ -1,6 +1,5 @@
 package com.tawkto.jim
 
-import android.R
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.Window
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.tawkto.jim.databinding.ActivitySearchBinding
@@ -26,9 +26,26 @@ class SearchActivity : AppCompatActivity() {
         val binding = ActivitySearchBinding.inflate(layoutInflater).apply {
             vm = viewModel
             lifecycleOwner = this@SearchActivity
+            epoxyResults.apply {
+                layoutManager = LinearLayoutManager(context)
+            }
         }
 
         setContentView(binding.root)
+
+        viewModel.results.observe(this) {
+            binding.epoxyResults.apply {
+                withModels {
+                    for (profile in it) {
+                        layoutSearchItem {
+                            id(profile.id)
+                            profile(profile)
+                            vm(viewModel)
+                        }
+                    }
+                }
+            }
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

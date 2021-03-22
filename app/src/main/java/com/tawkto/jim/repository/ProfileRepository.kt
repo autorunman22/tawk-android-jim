@@ -1,5 +1,8 @@
 package com.tawkto.jim.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.tawkto.jim.db.ProfileCacheMapper
 import com.tawkto.jim.db.ProfileDao
 import com.tawkto.jim.model.Profile
@@ -58,5 +61,14 @@ class ProfileRepository @Inject constructor(
         val profileCache = profileDao.getProfileById(id) ?: return false
 
         return profileCache.note != null
+    }
+
+    fun getProfileByQuery(query: String): LiveData<List<Profile>> {
+        if (query.isEmpty()) return liveData {
+            listOf<Profile>()
+        }
+        return profileDao.getProfileByQuery("%$query%").map {
+            profileCacheMapper.mapFromEntityList(it)
+        }
     }
 }
