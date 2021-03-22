@@ -2,7 +2,9 @@ package com.tawkto.jim.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import com.tawkto.jim.model.User
+import com.tawkto.jim.paging.UserPagingSource
 import com.tawkto.jim.repository.UserRepository
 import com.tawkto.jim.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +15,14 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val userRepository: UserRepository): ViewModel() {
+class MainViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val pagingSource: UserPagingSource
+) : ViewModel() {
+
+    val flow: StateFlow<PagingData<User>> = Pager(PagingConfig(pageSize = 30)) {
+        pagingSource
+    }.flow.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
 
     private val mUsers = MutableStateFlow<DataState<List<User>>>(DataState.Initial)
     val users: StateFlow<DataState<List<User>>> = mUsers

@@ -13,12 +13,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
 fun EpoxyRecyclerView.setDivider(@DrawableRes drawableRes: Int) {
+    val divider = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
+    val drawable = ContextCompat.getDrawable(this.context, drawableRes)
+    drawable?.let {
+        divider.setDrawable(it)
+        addItemDecoration(divider)
+    }
+}
+
+fun RecyclerView.setDivider(@DrawableRes drawableRes: Int) {
     val divider = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
     val drawable = ContextCompat.getDrawable(this.context, drawableRes)
     drawable?.let {
