@@ -10,4 +10,5 @@
     <string name="write_a_note">Write a note…</string>
     <string name="save">Save</string>
     <string name="email_address">tawk@gmail.com</string>
+    <string name="offline_mode">Offline mode</string>
 </resources>

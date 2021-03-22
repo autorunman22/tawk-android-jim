@@ -34,27 +34,27 @@ class ProfileRepository @Inject constructor(
             emit(DataState.Success(profile))
         }
 
-//        try {
-//            val profileNetEntity = githubService.user(name)
-//            val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity)
-//
-//            // Cache profile to room
-//            profileDao.insert(profileCacheMapper.mapToEntity(profile))
-////            val profileEntity = ProfileNetworkEntity(
-////                3,
-////                "https://avatars.githubusercontent.com/u/3?v=4",
-////                "PJ Simon",
-////                "Facebook Inc",
-////                "http://tawk.to/blog",
-////                "LA San Francisco",
-////                "pjhyatt@tawk.com",
-////                3450,
-////                120)
-//
-//            emit(DataState.Success(profile))
-//        } catch (e: Exception) {
-//            emit(DataState.Error(e))
-//        }
+        try {
+            val profileNetEntity = githubService.user(name)
+            val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity)
+
+            // Cache profile to room
+            profileDao.insert(profileCacheMapper.mapToEntity(profile))
+//            val profileEntity = ProfileNetworkEntity(
+//                3,
+//                "https://avatars.githubusercontent.com/u/3?v=4",
+//                "PJ Simon",
+//                "Facebook Inc",
+//                "http://tawk.to/blog",
+//                "LA San Francisco",
+//                "pjhyatt@tawk.com",
+//                3450,
+//                120)
+
+            emit(DataState.Success(profile))
+        } catch (e: Exception) {
+            emit(DataState.Error(e))
+        }
     }
 
     fun updateNoteById(id: Int, note: String?) {

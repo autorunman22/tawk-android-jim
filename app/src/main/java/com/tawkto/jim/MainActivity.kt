@@ -3,6 +3,7 @@ package com.tawkto.jim
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.tawkto.jim.databinding.LayoutUserBinding
 import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.MainViewModel
 import com.tawkto.jim.util.DataState
+import com.tawkto.jim.util.isNetworkAvailable
 import com.tawkto.jim.util.setDivider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -57,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.loadUsers()
+
+        checkNetStatus()
     }
 
     // Update the RecyclerView for each collection
@@ -78,8 +82,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkNetStatus() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                tvNetStatus.visibility = View.GONE
+            } else {
+                tvNetStatus.visibility = View.VISIBLE
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.loadUsers()
+        checkNetStatus()
     }
 }

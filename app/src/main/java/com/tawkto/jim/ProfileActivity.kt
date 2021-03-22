@@ -2,6 +2,7 @@ package com.tawkto.jim
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -9,6 +10,7 @@ import com.tawkto.jim.databinding.ActivityProfileBinding
 import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.ProfileViewModel
 import com.tawkto.jim.util.DataState
+import com.tawkto.jim.util.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
@@ -39,6 +41,8 @@ class ProfileActivity : AppCompatActivity() {
         fetchUserByName(user)
 
         setupCollection()
+
+        checkNetStatus()
     }
 
     private fun setupCollection() {
@@ -71,6 +75,16 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun fetchUserByName(user: User) {
         viewModel.userByName(user)
+    }
+
+    private fun checkNetStatus() {
+        binding.apply {
+            if (isNetworkAvailable()) {
+                tvNetStatus.visibility = View.GONE
+            } else {
+                tvNetStatus.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun getUser() = intent.getSerializableExtra("user") as User

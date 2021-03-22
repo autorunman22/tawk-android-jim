@@ -1,17 +1,21 @@
 package com.tawkto.jim.util
 
+import android.content.Context
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.tawkto.jim.R
 import timber.log.Timber
 
 fun EpoxyRecyclerView.setDivider(@DrawableRes drawableRes: Int) {
@@ -24,10 +28,10 @@ fun EpoxyRecyclerView.setDivider(@DrawableRes drawableRes: Int) {
 }
 
 private val negative = floatArrayOf(
-    -1.0f,     .0f,     .0f,    .0f,  255.0f,
-    .0f,   -1.0f,     .0f,    .0f,  255.0f,
-    .0f,     .0f,   -1.0f,    .0f,  255.0f,
-    .0f,     .0f,     .0f,   1.0f,     .0f
+    -1.0f, .0f, .0f, .0f, 255.0f,
+    .0f, -1.0f, .0f, .0f, 255.0f,
+    .0f, .0f, -1.0f, .0f, 255.0f,
+    .0f, .0f, .0f, 1.0f, .0f
 )
 
 fun Drawable.toNegative() {
@@ -50,12 +54,32 @@ fun setImageViewByUrl(imageView: ImageView, url: String, imgIndex: Int) {
                     })
                 }
 
-                override fun onLoadCleared(placeholder: Drawable?) { }
+                override fun onLoadCleared(placeholder: Drawable?) {}
 
             })
     } else {
         Glide.with(imageView.context.applicationContext)
             .load(url)
             .into(imageView)
+    }
+}
+
+// Check whether there's an available network/internet
+fun Context.isNetworkAvailable(): Boolean {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCaps = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return when {
+            networkCaps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            networkCaps.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            networkCaps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+    } else {
+        val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+        return nwInfo.isConnected
     }
 }

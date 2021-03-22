@@ -31,9 +31,12 @@ class MainViewModel @Inject constructor(private val userRepository: UserReposito
 
     fun onClickProfile(id: Int) {
         Timber.d("Selecting user with ID: $id")
-        val user = (mUsers.value as DataState.Success).data.find { it.id == id }
-        user?.let {
-            mNavToProfile.tryEmit(it)
+
+        if (mUsers.value is DataState.Success) {
+            val user = (mUsers.value as DataState.Success).data.find { it.id == id }
+            user?.let {
+                mNavToProfile.tryEmit(it)
+            }
         }
     }
 }
