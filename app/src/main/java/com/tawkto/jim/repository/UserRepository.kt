@@ -29,20 +29,20 @@ class UserRepository @Inject constructor(
         val mUsers = userCacheMapper.mapFromEntityList(userDao.users())
         emit(DataState.Success(mUsers))
 
-//        try {
-//            val networkUsers = githubService.users()
-//            val users = networkMapper.mapFromEntityList(networkUsers, mUsers)
-//
-//            // Cache users to Room
-//            for (user in users) {
-//                userDao.insert(userCacheMapper.mapToEntity(user))
-//            }
-//
-//            emit(DataState.Success(users))
-//            Timber.d("Done")
-//        } catch (e: Exception) {
-//            emit(DataState.Error(e))
-//        }
+        try {
+            val networkUsers = githubService.users()
+            val users = networkMapper.mapFromEntityList(networkUsers, mUsers)
+
+            // Cache users to Room
+            for (user in users) {
+                userDao.insert(userCacheMapper.mapToEntity(user))
+            }
+
+            emit(DataState.Success(users))
+            Timber.d("Done")
+        } catch (e: Exception) {
+            emit(DataState.Error(e))
+        }
     }
 
     fun updateNoteById(id: Int, note: String?) {

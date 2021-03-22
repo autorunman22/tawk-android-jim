@@ -13,6 +13,7 @@
             android:gravity="center"
             android:background="#D53838"
             android:padding="6dp"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="match_parent"

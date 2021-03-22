@@ -102,27 +102,28 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
     override fun onOnline() {
         if (isInit) {
+            Timber.d("Do something online")
             toggleNetMode(true)
-            Timber.d("Do something")
-        } else {
-            isInit = true
-            Timber.d("Dont do anything even online")
-        }
+            viewModel.loadUsers()
+        } else isInit = true // On Activity load, let onCreate fetches the data
     }
 
     override fun onOffline() {
+        Timber.d("Offline mode")
         toggleNetMode(false)
-        Timber.d("Were offline")
     }
 
     private fun toggleNetMode(isOnline: Boolean) {
+        Timber.d("Toggleing: $isOnline")
         binding.apply {
             lifecycleScope.launch(Dispatchers.Main) {
                 if (isOnline) {
+                    Timber.d("are we even?")
                     tvNetStatus.setBackgroundResource(R.color.green)
                     tvNetStatus.text = getText(R.string.online)
                     tvNetStatus.visibility = View.VISIBLE
                     delay(2500)
+                    Timber.d("are we even?")
                     tvNetStatus.visibility = View.GONE
                 } else {
                     tvNetStatus.setBackgroundResource(R.color.red)
