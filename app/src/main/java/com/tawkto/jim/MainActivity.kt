@@ -3,27 +3,23 @@ package com.tawkto.jim
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.tawkto.jim.databinding.ActivityMainBinding
-import com.tawkto.jim.databinding.LayoutUserBinding
 import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.MainViewModel
-import com.tawkto.jim.util.DataState
-import com.tawkto.jim.util.isNetworkAvailable
-import com.tawkto.jim.util.setDivider
+import com.tawkto.jim.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NetCallback {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var networkUtil: NetworkUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.loadUsers()
 
-        checkNetStatus()
+        initNetworkCallbacks()
     }
 
     // Update the RecyclerView for each collection
@@ -82,19 +78,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkNetStatus() {
-        binding.apply {
-            if (isNetworkAvailable()) {
-                tvNetStatus.visibility = View.GONE
-            } else {
-                tvNetStatus.visibility = View.VISIBLE
-            }
+    private fun initNetworkCallbacks() {
+        networkUtil = NetworkUtil(applicationContext, this).apply {
+            startNetworkCallback()
         }
+
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.loadUsers()
-        checkNetStatus()
+    }
+
+    override fun onDestroy() {
+        networkUtil.stopNetworkCallback()
+        super.onDestroy()
+    }
+
+    override fun onOnline() {
+        Timber.d("Were online")
+
+    }
+
+    override fun onOffline() {
+        Timber.d("Were offline")
     }
 }
