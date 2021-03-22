@@ -1,5 +1,5 @@
 # tawk-android-jim 
-## (21/25 points completed)
+## (22/25 points completed)
 Simple Github User and Profile demonstration
 
 ### General Requirements
@@ -15,7 +15,7 @@ Simple Github User and Profile demonstration
 - [x] **Requirement 4**: All network calls must be queued and limited to 1 request at a time.**
 - [x] **Requirement 5**: All media has to be cached on disk
 - [x] **Requirement 6**: Write Unit tests for data processing logic & models, Room models (validate creation & update).
-- [ ] **Requirement 7**: Screen rotation change must be supported.
+- [x] **Requirement 7**: Screen rotation change must be supported.
 
 ### Github Users
 - [x] **Requirement 1**: The app has to be able to work offline if data has been previously loaded.

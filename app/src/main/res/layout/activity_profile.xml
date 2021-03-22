@@ -114,6 +114,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
+            android:padding="8dp"
+            android:background="@drawable/et_background"
             app:layout_constraintBottom_toTopOf="@id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
