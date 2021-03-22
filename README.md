@@ -1,5 +1,5 @@
 # tawk-android-jim 
-## (19/25 points completed)
+## (20/25 points completed)
 Simple Github User and Profile demonstration
 
 ### General Requirements
@@ -14,7 +14,7 @@ Simple Github User and Profile demonstration
 - [x] **Requirement 3**: UI must be done using ConstraintLayout where appropriate.
 - [x] **Requirement 4**: All network calls must be queued and limited to 1 request at a time.**
 - [x] **Requirement 5**: All media has to be cached on disk
-- [ ] **Requirement 6**: Write Unit tests for data processing logic & models, Room models (validate creation & update).
+- [x] **Requirement 6**: Write Unit tests for data processing logic & models, Room models (validate creation & update).
 - [ ] **Requirement 7**: Screen rotation change must be supported.
 
 ### Github Users

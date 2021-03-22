@@ -90,4 +90,11 @@ dependencies {
 
     // Chucker
     debugImplementation "com.github.chuckerteam.chucker:library:3.4.0"
+
+    // StateFlow & SharedFlow testing
+    testImplementation 'app.cash.turbine:turbine:0.4.1'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation 'org.mockito:mockito-inline:3.3.3'
 }

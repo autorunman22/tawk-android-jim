@@ -29,9 +29,9 @@ class ProfileRepository @Inject constructor(
         Timber.d("Fetching profile...")
         emit(DataState.Loading)
 
-        val profile = profileDao.getProfileById(id)?.let { profileCacheMapper.mapFromEntity(it) }
-        profile?.let {
-            emit(DataState.Success(profile))
+        val profileDb = profileDao.getProfileById(id)?.let { profileCacheMapper.mapFromEntity(it) }
+        profileDb?.let {
+            emit(DataState.Success(profileDb))
         }
 
         try {
