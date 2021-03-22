@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tawkto.jim.databinding.ActivityMainBinding
+import com.tawkto.jim.db.UserCacheMapper
 import com.tawkto.jim.paging.adapter.UserAdapter
 import com.tawkto.jim.ui.MainViewModel
 import com.tawkto.jim.util.*
@@ -17,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NetCallback {
@@ -26,8 +30,11 @@ class MainActivity : AppCompatActivity(), NetCallback {
     private lateinit var networkUtil: NetworkUtil
     private var isInit = false
 
+    @Inject lateinit var userCacheMapper: UserCacheMapper
+
     private lateinit var userAdapter: UserAdapter
 
+    @ExperimentalPagingApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,8 +51,10 @@ class MainActivity : AppCompatActivity(), NetCallback {
         setContentView(binding.root)
 
         lifecycleScope.launchWhenStarted {
-            viewModel.flow.collect {
-                userAdapter.submitData(it)
+            viewModel.flowPager.collect {
+                userAdapter.submitData(it.map { userCacheEntity ->
+                    userCacheMapper.mapFromEntity(userCacheEntity)
+                })
             }
         }
 

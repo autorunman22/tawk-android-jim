@@ -29,4 +29,10 @@ class UserCacheMapper @Inject constructor(): Mapper<UserCacheEntity, User> {
     fun mapFromEntityList(entities: List<UserCacheEntity>): List<User> {
         return entities.map { mapFromEntity(it) }
     }
+
+    fun mapToEntityList(users: List<User>): List<UserCacheEntity> {
+        return users.map {
+            mapToEntity(it)
+        }
+    }
 }

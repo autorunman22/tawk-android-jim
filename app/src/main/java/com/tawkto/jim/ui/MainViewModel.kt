@@ -3,8 +3,12 @@ package com.tawkto.jim.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
+import com.tawkto.jim.db.UserCacheEntity
+import com.tawkto.jim.db.UserCacheMapper
+import com.tawkto.jim.db.UserDao
 import com.tawkto.jim.model.User
 import com.tawkto.jim.paging.UserPagingSource
+import com.tawkto.jim.paging.UserRemoteMediator
 import com.tawkto.jim.repository.UserRepository
 import com.tawkto.jim.util.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,13 +19,21 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel @ExperimentalPagingApi
+@Inject constructor(
     private val userRepository: UserRepository,
-    private val pagingSource: UserPagingSource
+    private val pagingSource: UserPagingSource,
+    private val userCacheMapper: UserCacheMapper,
+    remoteMediator: UserRemoteMediator,
+    private val userDao: UserDao,
 ) : ViewModel() {
 
-    val flow: StateFlow<PagingData<User>> = Pager(PagingConfig(pageSize = 30)) {
-        pagingSource
+    @ExperimentalPagingApi
+    val flowPager: StateFlow<PagingData<UserCacheEntity>> = Pager(
+        config = PagingConfig(pageSize = 30),
+        remoteMediator = remoteMediator
+    ) {
+        userDao.pagingSource()
     }.flow.cachedIn(viewModelScope).stateIn(viewModelScope, SharingStarted.WhileSubscribed(), PagingData.empty())
 
     private val mUsers = MutableStateFlow<DataState<List<User>>>(DataState.Initial)
