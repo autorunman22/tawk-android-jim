@@ -35,7 +35,7 @@ class ProfileRepository @Inject constructor(
         }
 
         try {
-            val profileNetEntity = githubService.user(name)
+            val profileNetEntity = githubService.profile(name)
             val profile = profileNetworkNetMapper.mapFromEntity(profileNetEntity)
 
             // Cache profile to room

@@ -35,10 +35,11 @@ class MainActivity : AppCompatActivity(), NetCallback {
             viewModel.users.collect {
                 when (it) {
                     is DataState.Success -> {
+                        Timber.d("Success data: ${it.data.size}")
                         initUsersList(it.data)
                     }
                     is DataState.Error -> {
-                        Timber.d("Error occurred. Please try again.")
+                        Timber.d("Error occurred. Please try again: ${it.exception.message}")
                     }
                     is DataState.Loading -> {
                         Timber.d("Loading..")
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
         lifecycleScope.launchWhenStarted {
             viewModel.navToProfile.collect {
                 val intent = Intent(this@MainActivity, ProfileActivity::class.java).apply {
-                    putExtra("user", it)
+                    putExtra("userPair", it)
                 }
                 startActivity(intent)
             }

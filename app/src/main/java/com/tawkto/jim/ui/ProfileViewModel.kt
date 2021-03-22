@@ -31,7 +31,7 @@ class ProfileViewModel @Inject constructor(
     val note: MutableLiveData<String?> = MutableLiveData(null)
 
     // Keep a reference of the current user to update note field
-    private lateinit var mUser: User
+    private lateinit var mUser: Pair<Int, String>
 
     // Persist the note for this profile and user model
     fun onSave() {
@@ -39,16 +39,16 @@ class ProfileViewModel @Inject constructor(
 
         Timber.d("Saving this note: ${note.value}")
         viewModelScope.launch(Dispatchers.Default) {
-            userRepository.updateNoteById(mUser.id, note.value)
-            profileRepository.updateNoteById(mUser.id, note.value)
+            userRepository.updateNoteById(mUser.first, note.value)
+            profileRepository.updateNoteById(mUser.first, note.value)
         }
     }
 
-    fun userByName(user: User) {
-        this.mUser = user
+    fun userByUsername(userPair: Pair<Int, String>) {
+        this.mUser = userPair
 
         viewModelScope.launch(Dispatchers.Default) {
-            profileRepository.userByName(user.username, user.id).collect {
+            profileRepository.userByName(userPair.second, userPair.first).collect {
                 mMutableUser.value = it
             }
         }

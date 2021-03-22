@@ -26,17 +26,11 @@ class MainViewModel @Inject constructor(private val userRepository: UserReposito
         }
     }
 
-    private val mNavToProfile = MutableSharedFlow<User>(replay = 1)
-    val navToProfile: SharedFlow<User> = mNavToProfile
+    private val mNavToProfile = MutableSharedFlow<Pair<Int, String>>(replay = 1)
+    val navToProfile: SharedFlow<Pair<Int, String>> = mNavToProfile
 
-    fun onClickProfile(id: Int) {
-        Timber.d("Selecting user with ID: $id")
-
-        if (mUsers.value is DataState.Success) {
-            val user = (mUsers.value as DataState.Success).data.find { it.id == id }
-            user?.let {
-                mNavToProfile.tryEmit(it)
-            }
-        }
+    fun onClickProfile(id: Int, username: String) {
+        Timber.d("Selecting user with ID: $id and username: $username")
+        mNavToProfile.tryEmit(id to username)
     }
 }

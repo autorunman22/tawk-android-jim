@@ -24,21 +24,15 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val user = getUser()
-        Timber.d("Profile user: $user")
-
         binding = ActivityProfileBinding.inflate(layoutInflater).apply {
             vm = viewModel
             lifecycleOwner = this@ProfileActivity
 
-            Glide.with(this@ProfileActivity)
-                .load(user.avatarUrl)
-                .into(ivAvatar)
-
         }
         setContentView(binding.root)
 
-        fetchUserByName(user)
+        val user = getUser()
+        fetchUserByName(user.first as Int to user.second.toString())
 
         setupCollection()
 
@@ -60,6 +54,10 @@ class ProfileActivity : AppCompatActivity() {
                                 tvFollowers.text = followers.toString()
                                 tvFollowing.text = following.toString()
                                 viewModel.note.value = note
+
+                                Glide.with(this@ProfileActivity)
+                                    .load(avatarUrl)
+                                    .into(ivAvatar)
                             }
                         }
                     }
@@ -73,8 +71,8 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchUserByName(user: User) {
-        viewModel.userByName(user)
+    private fun fetchUserByName(userPair: Pair<Int, String>) {
+        viewModel.userByUsername(userPair)
     }
 
     private fun checkNetStatus() {
@@ -87,5 +85,5 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUser() = intent.getSerializableExtra("user") as User
+    private fun getUser() = intent.getSerializableExtra("userPair") as Pair<*, *>
 }

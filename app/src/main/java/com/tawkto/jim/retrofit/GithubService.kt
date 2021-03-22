@@ -9,5 +9,5 @@ interface GithubService {
     suspend fun users(): List<UserNetworkEntity>
 
     @GET("/users/{name}")
-    suspend fun user(@Path("name") name: String): ProfileNetworkEntity
+    suspend fun profile(@Path("name") name: String): ProfileNetworkEntity
 }

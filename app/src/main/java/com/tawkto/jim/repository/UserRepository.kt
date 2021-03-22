@@ -6,6 +6,7 @@ import com.tawkto.jim.model.User
 import com.tawkto.jim.retrofit.GithubService
 import com.tawkto.jim.retrofit.NetworkMapper
 import com.tawkto.jim.util.DataState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
@@ -27,9 +28,11 @@ class UserRepository @Inject constructor(
 
         Timber.d("Show cached users if any")
         val mUsers = userCacheMapper.mapFromEntityList(userDao.users())
+        Timber.d("Cached users: ${mUsers.size}")
         emit(DataState.Success(mUsers))
 
         try {
+            delay(1000)
             val networkUsers = githubService.users()
             val users = networkMapper.mapFromEntityList(networkUsers, mUsers)
 

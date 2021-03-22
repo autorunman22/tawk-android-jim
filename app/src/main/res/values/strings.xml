@@ -12,4 +12,5 @@
     <string name="email_address">tawk@gmail.com</string>
     <string name="offline_mode">Offline mode</string>
     <string name="online">Online</string>
+    <string name="search_user_or_notes">Search user or notes...</string>
 </resources>
