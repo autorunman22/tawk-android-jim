@@ -3,6 +3,7 @@ package com.tawkto.jim
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +12,10 @@ import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.MainViewModel
 import com.tawkto.jim.util.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -20,6 +24,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private lateinit var networkUtil: NetworkUtil
+    private var isInit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,11 +101,35 @@ class MainActivity : AppCompatActivity(), NetCallback {
     }
 
     override fun onOnline() {
-        Timber.d("Were online")
-
+        if (isInit) {
+            toggleNetMode(true)
+            Timber.d("Do something")
+        } else {
+            isInit = true
+            Timber.d("Dont do anything even online")
+        }
     }
 
     override fun onOffline() {
+        toggleNetMode(false)
         Timber.d("Were offline")
+    }
+
+    private fun toggleNetMode(isOnline: Boolean) {
+        binding.apply {
+            lifecycleScope.launch(Dispatchers.Main) {
+                if (isOnline) {
+                    tvNetStatus.setBackgroundResource(R.color.green)
+                    tvNetStatus.text = getText(R.string.online)
+                    tvNetStatus.visibility = View.VISIBLE
+                    delay(2500)
+                    tvNetStatus.visibility = View.GONE
+                } else {
+                    tvNetStatus.setBackgroundResource(R.color.red)
+                    tvNetStatus.text = getText(R.string.offline_mode)
+                    tvNetStatus.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

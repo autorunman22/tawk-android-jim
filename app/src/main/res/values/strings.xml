@@ -11,4 +11,5 @@
     <string name="save">Save</string>
     <string name="email_address">tawk@gmail.com</string>
     <string name="offline_mode">Offline mode</string>
+    <string name="online">Online</string>
 </resources>

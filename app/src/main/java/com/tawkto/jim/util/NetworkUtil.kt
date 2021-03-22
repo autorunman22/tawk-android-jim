@@ -37,7 +37,9 @@ constructor(private val context: Context, private val netCallback: NetCallback) 
     fun stopNetworkCallback() {
         val cm: ConnectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        cm.unregisterNetworkCallback(ConnectivityManager.NetworkCallback())
+        try {
+            cm.unregisterNetworkCallback(ConnectivityManager.NetworkCallback())
+        } catch (e: Exception) {}
     }
 
 
