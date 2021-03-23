@@ -1,5 +1,5 @@
 # tawk-android-jim 
-## (23/25 points completed)
+## (24/25 points completed)
 Simple Github User and Profile demonstration
 
 ### General Requirements
@@ -27,7 +27,7 @@ Simple Github User and Profile demonstration
 - [x] **Requirement 1**: Github users list can be obtained from https://api.github.com/users?since=0 in JSON format.
 - [x] **Requirement 2**: The list must support pagination (scroll to load more) utilizing since parameter as the integer ID of the last User loaded.
 - [ ] **Requirement 3**: Page size has to be dynamically determined after the first batch is loaded.
-- [ ] **Requirement 4**: The list has to display a spinner while loading data as the last list item.
+- [x] **Requirement 4**: The list has to display a spinner while loading data as the last list item.
 - [x] **Requirement 5**: Every fourth avatar's (the image - not the background!) colour should have its colours inverted.
 - [x] **Requirement 6**: List item view should have a note icon if there is note information saved for the given user.
 - [x] **Requirement 7**: Users list has to be searchable - local search only; in search mode, there is no pagination; username and note (see Profile section) fields should

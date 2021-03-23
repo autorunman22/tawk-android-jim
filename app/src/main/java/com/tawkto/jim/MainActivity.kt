@@ -7,20 +7,24 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.tawkto.jim.databinding.ActivityMainBinding
 import com.tawkto.jim.db.UserCacheMapper
 import com.tawkto.jim.paging.adapter.UserAdapter
+import com.tawkto.jim.paging.adapter.UserLoadStateAdapter
 import com.tawkto.jim.ui.MainViewModel
 import com.tawkto.jim.util.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,8 +39,6 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
     @Inject lateinit var userCacheMapper: UserCacheMapper
 
-    private lateinit var userAdapter: UserAdapter
-
     @ExperimentalPagingApi
     override fun onCreate(savedInstanceState: Bundle?) {
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -45,12 +47,30 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
         super.onCreate(savedInstanceState)
 
-        userAdapter = UserAdapter(viewModel) { user, view ->
+        val userAdapter = UserAdapter(viewModel) { user, view ->
             val options = ActivityOptions.makeSceneTransitionAnimation(this, view, "shared_image_view")
             val intent = Intent(this@MainActivity, ProfileActivity::class.java).apply {
                 putExtra("userTriple",  Triple(user.id, user.username, user.avatarUrl))
             }
             startActivity(intent, options.toBundle())
+        }.apply {
+            withLoadStateHeaderAndFooter(
+                footer = UserLoadStateAdapter(::retry),
+                header = UserLoadStateAdapter(::retry)
+            )
+        }
+
+        lifecycleScope.launchWhenStarted {
+            userAdapter.loadStateFlow.collectLatest { state ->
+                binding.apply {
+                    loader.isVisible = state.refresh is LoadState.Loading
+                    btnRetry.isVisible = state.refresh is LoadState.Error
+
+                    if (state.refresh is LoadState.Error) {
+                        toggleNetMode(false, state.refresh.toString())
+                    }
+                }
+            }
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
@@ -63,6 +83,9 @@ class MainActivity : AppCompatActivity(), NetCallback {
                 val options = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity, it, "transition_search")
                 val intent = Intent(this@MainActivity, SearchActivity::class.java)
                 startActivity(intent, options.toBundle())
+            }
+            btnRetry.setOnClickListener {
+                userAdapter.retry()
             }
         }
         setContentView(binding.root)
@@ -103,7 +126,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
         toggleNetMode(false)
     }
 
-    private fun toggleNetMode(isOnline: Boolean) {
+    private fun toggleNetMode(isOnline: Boolean, errorMessage: String = getText(R.string.offline_mode).toString()) {
         Timber.d("Toggling: $isOnline")
         binding.apply {
             lifecycleScope.launch(Dispatchers.Main) {
@@ -117,7 +140,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
                     tvNetStatus.visibility = View.GONE
                 } else {
                     tvNetStatus.setBackgroundResource(R.color.red)
-                    tvNetStatus.text = getText(R.string.offline_mode)
+                    tvNetStatus.text = errorMessage
                     tvNetStatus.visibility = View.VISIBLE
                 }
             }
