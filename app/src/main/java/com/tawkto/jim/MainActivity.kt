@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
     private lateinit var networkUtil: NetworkUtil
     private var isInit = false
 
+    private lateinit var userAdapter: UserAdapter
     @Inject lateinit var userCacheMapper: UserCacheMapper
 
     @ExperimentalPagingApi
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
 
         super.onCreate(savedInstanceState)
 
-        val userAdapter = UserAdapter(viewModel) { user, view ->
+        userAdapter = UserAdapter(viewModel) { user, view ->
             val options = ActivityOptions.makeSceneTransitionAnimation(this, view, "shared_image_view")
             val intent = Intent(this@MainActivity, ProfileActivity::class.java).apply {
                 putExtra("userTriple",  Triple(user.id, user.username, user.avatarUrl))
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity(), NetCallback {
         if (isInit) {
             Timber.d("Do something online")
             toggleNetMode(true)
+            userAdapter.retry()
         } else isInit = true // On Activity load, let onCreate fetches the data
     }
 
@@ -131,12 +133,10 @@ class MainActivity : AppCompatActivity(), NetCallback {
         binding.apply {
             lifecycleScope.launch(Dispatchers.Main) {
                 if (isOnline) {
-                    Timber.d("are we even?")
                     tvNetStatus.setBackgroundResource(R.color.green)
                     tvNetStatus.text = getText(R.string.online)
                     tvNetStatus.visibility = View.VISIBLE
                     delay(2500)
-                    Timber.d("are we even?")
                     tvNetStatus.visibility = View.GONE
                 } else {
                     tvNetStatus.setBackgroundResource(R.color.red)
