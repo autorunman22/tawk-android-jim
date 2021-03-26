@@ -11,6 +11,8 @@ import com.tawkto.jim.db.UserCacheMapper
 import com.tawkto.jim.db.UserRemoteKeys
 import com.tawkto.jim.retrofit.GithubService
 import com.tawkto.jim.retrofit.NetworkMapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,6 +26,13 @@ class UserRemoteMediator @Inject constructor(
 
     private val userDao = db.getUserDao()
     private val remoteKeysDao = db.getRemoteKeysDao()
+
+    override suspend fun initialize(): InitializeAction = withContext(Dispatchers.IO) {
+        val users = userDao.users()
+        if (users.isEmpty()) return@withContext InitializeAction.LAUNCH_INITIAL_REFRESH
+        // We will assume that cache data is fresh all the time
+        else return@withContext  InitializeAction.SKIP_INITIAL_REFRESH
+    }
 
     override suspend fun load(
         loadType: LoadType,
