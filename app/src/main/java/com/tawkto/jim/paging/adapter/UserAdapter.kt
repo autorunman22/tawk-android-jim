@@ -10,7 +10,10 @@ import com.tawkto.jim.databinding.LayoutUserBinding
 import com.tawkto.jim.model.User
 import com.tawkto.jim.ui.MainViewModel
 
-class UserAdapter(private val viewModel: MainViewModel, private val onItemClick: (User, View) -> Unit) : PagingDataAdapter<User, UserAdapter.UserViewHolder>(COMPARATOR){
+class UserAdapter(
+    private val viewModel: MainViewModel,
+    private val onItemClick: (User, View) -> Unit
+) : PagingDataAdapter<User, UserAdapter.UserViewHolder>(COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = LayoutUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -42,5 +45,6 @@ class UserAdapter(private val viewModel: MainViewModel, private val onItemClick:
         }
     }
 
-    inner class UserViewHolder(val binding: LayoutUserBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class UserViewHolder(val binding: LayoutUserBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity(), NetCallback {
         lifecycleScope.launchWhenStarted {
             userAdapter.loadStateFlow.collectLatest { state ->
                 binding.apply {
-                    loader.isVisible = state.refresh is LoadState.Loading
-                    btnRetry.isVisible = state.refresh is LoadState.Error
+                    loader.isVisible = (state.refresh is LoadState.Loading) || state.append is LoadState.Loading
+                    btnRetry.isVisible = state.refresh is LoadState.Error || state.mediator?.append is LoadState.Error
 
                     if (state.refresh is LoadState.Error) {
                         toggleNetMode(false, state.refresh.toString())
